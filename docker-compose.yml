@@ -1,0 +1,155 @@
+version: '3.9'
+
+x-airflow-common: &airflow-common
+  image: apache/airflow:2.9.2-python3.11
+  env_file:
+    - .env
+  user: '0:0'
+  environment:
+    - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+    - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_FERNET_KEY}
+    - AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION=True
+    - AIRFLOW__CORE__LOAD_EXAMPLES=False
+  volumes:
+    - ./airflow/dags:/opt/airflow/dags
+    - ./airflow/logs:/opt/airflow/logs
+    - ./airflow/plugins:/opt/airflow/plugins
+    - ./shared_data:/opt/shared_data
+    - /var/run/docker.sock:/var/run/docker.sock
+  networks:
+    - default
+
+services:
+  # =========================
+  # Postgres для RAW данных
+  # =========================
+  postgres:
+    container_name: postgres-db
+    image: postgres:15
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - '5433:5432'
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 400M
+
+  # =========================
+  # ClickHouse
+  # =========================
+  clickhouse:
+    container_name: clickhouse-server
+    image: clickhouse/clickhouse-server:24.3
+    user: '101:101'
+    ports:
+      - '8123:8123'
+      - '9000:9000'
+    environment:
+      - CLICKHOUSE_DB=airflow
+      - CLICKHOUSE_USER=airflow
+      - CLICKHOUSE_PASSWORD=airflow
+      - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - ./shared_data:/opt/shared_data
+    networks:
+      - default
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+
+  # =========================
+  # Airflow init
+  # =========================
+  airflow-init:
+    <<: *airflow-common
+    container_name: airflow-init
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        airflow db init &&
+        airflow users create \
+          --username admin \
+          --password admin \
+          --firstname Admin \
+          --lastname User \
+          --role Admin \
+          --email admin@example.com
+    restart: 'no'
+    depends_on:
+      - postgres
+      - clickhouse
+
+  # =========================
+  # Airflow webserver
+  # =========================
+  airflow-webserver:
+    <<: *airflow-common
+    container_name: airflow-webserver
+    command: webserver
+    ports:
+      - '8080:8080'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.7'
+          memory: 1.2G
+    restart: always
+
+  # =========================
+  # Airflow scheduler
+  # =========================
+  airflow-scheduler:
+    <<: *airflow-common
+    container_name: airflow-scheduler
+    command: scheduler
+    deploy:
+      resources:
+        limits:
+          cpus: '0.6'
+          memory: 1G
+    restart: always
+    depends_on:
+      - airflow-webserver
+
+  # =========================
+  # dbt
+  # =========================
+  dbt:
+    build:
+      context: ./dbt
+    image: youtube-dbt
+    container_name: dbt
+    depends_on:
+      - clickhouse
+      - postgres
+    environment:
+      DBT_PROFILES_DIR: /usr/app
+    volumes:
+      - ./profiles.yml:/usr/app/profiles.yml
+    tty: true
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  clickhouse_data:
+  postgres_data:
+  shared_data:

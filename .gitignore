@@ -1,0 +1,23 @@
+# === Environment ===
+.env
+
+profiles.yml
+
+# === Airflow ===
+airflow/logs/
+airflow/plugins/
+
+# === Docker volumes ===
+postgres_data/
+clickhouse_data/
+shared_data/
+
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+
+# === OS ===
+.DS_Store
+Thumbs.db

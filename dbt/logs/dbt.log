@@ -1,0 +1,64 @@
+[0m11:02:17.735085 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f312b7814e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f31292ef790>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f31292ef6d0>]}
+
+
+============================== 11:02:17.764055 | c7721040-3ad8-4244-b4ca-9c66d6238d08 ==============================
+[0m11:02:17.764055 [info ] [MainThread]: Running with dbt=1.7.2
+[0m11:02:17.769064 [debug] [MainThread]: running dbt with arguments {'static_parser': 'True', 'debug': 'False', 'log_format': 'default', 'use_colors': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'no_print': 'None', 'fail_fast': 'False', 'warn_error': 'None', 'quiet': 'False', 'log_cache_events': 'False', 'introspect': 'True', 'use_experimental_parser': 'False', 'printer_width': '80', 'invocation_command': 'dbt init youtube_project', 'cache_selected_only': 'False', 'partial_parse': 'True', 'target_path': 'None', 'send_anonymous_usage_stats': 'True', 'version_check': 'True', 'profiles_dir': '/usr/app', 'indirect_selection': 'eager', 'write_json': 'True', 'log_path': 'logs'}
+[0m11:02:17.806250 [debug] [MainThread]: Starter project path: /usr/local/lib/python3.10/site-packages/dbt/include/starter_project
+[0m11:02:18.113537 [info ] [MainThread]: 
+Your new dbt project "youtube_project" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m11:02:18.117261 [info ] [MainThread]: Setting up your profile.
+[0m11:02:26.449045 [info ] [MainThread]: No sample profile found for clickhouse.
+[0m11:02:26.452374 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f312b7814e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f312938d780>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f312938d7e0>]}
+[0m11:02:26.454477 [debug] [MainThread]: Flushing usage events
+[0m11:02:26.474015 [debug] [MainThread]: Error sending anonymous usage statistics. Disabling tracking for this execution. If you wish to permanently disable tracking, see: https://docs.getdbt.com/reference/global-configs#send-anonymous-usage-stats.
+[0m13:20:44.389554 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fbecabbd5d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fbec87c7820>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fbec87c7760>]}
+
+
+============================== 13:20:44.398745 | dab04073-699f-4c0c-ade0-c7c558d9d7ea ==============================
+[0m13:20:44.398745 [info ] [MainThread]: Running with dbt=1.7.2
+[0m13:20:44.401376 [debug] [MainThread]: running dbt with arguments {'quiet': 'False', 'profiles_dir': '/usr/app', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'write_json': 'True', 'warn_error': 'None', 'introspect': 'True', 'log_format': 'default', 'use_experimental_parser': 'False', 'cache_selected_only': 'False', 'debug': 'False', 'fail_fast': 'False', 'send_anonymous_usage_stats': 'True', 'no_print': 'None', 'log_path': 'logs', 'target_path': 'None', 'static_parser': 'True', 'invocation_command': 'dbt debug', 'version_check': 'True', 'log_cache_events': 'False', 'use_colors': 'True', 'partial_parse': 'True', 'printer_width': '80', 'indirect_selection': 'eager'}
+[0m13:20:44.404106 [info ] [MainThread]: dbt version: 1.7.2
+[0m13:20:44.406639 [info ] [MainThread]: python version: 3.10.19
+[0m13:20:44.409677 [info ] [MainThread]: python path: /usr/local/bin/python3.10
+[0m13:20:44.412533 [info ] [MainThread]: os info: Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.41
+[0m13:20:44.417538 [info ] [MainThread]: Using profiles dir at /usr/app
+[0m13:20:44.420111 [info ] [MainThread]: Using profiles.yml file at /usr/app/profiles.yml
+[0m13:20:44.422841 [info ] [MainThread]: Using dbt_project.yml file at /usr/app/dbt_project.yml
+[0m13:20:44.426348 [info ] [MainThread]: Configuration:
+[0m13:20:44.430830 [info ] [MainThread]:   profiles.yml file [[31mERROR not found[0m]
+[0m13:20:44.438858 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m13:20:44.442070 [info ] [MainThread]: Required dependencies:
+[0m13:20:44.448241 [debug] [MainThread]: Executing "git --help"
+[0m13:20:44.453184 [info ] [MainThread]:  - git [[31mERROR[0m]
+
+[0m13:20:44.455892 [info ] [MainThread]: Connection test skipped since no profile was found
+[0m13:20:44.461893 [info ] [MainThread]: [31m3 checks failed:[0m
+[0m13:20:44.467400 [info ] [MainThread]: dbt looked for a profiles.yml file in /usr/app/profiles.yml, but did
+not find one. For more information on configuring your profile, consult the
+documentation:
+
+https://docs.getdbt.com/docs/configure-your-profile
+
+
+[0m13:20:44.472342 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </usr/app/dbt_project.yml> not found
+
+[0m13:20:44.478260 [info ] [MainThread]: Error from git --help: Could not find command, ensure it is in the user's PATH: "git"
+
+[0m13:20:44.483494 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fbecabbd5d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fbec87c78b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fbec87c78e0>]}
+[0m13:20:44.486450 [debug] [MainThread]: Flushing usage events

@@ -1,0 +1,11 @@
+youtube_project:
+  target: dev
+  outputs:
+    dev:
+      type: clickhouse
+      host: clickhouse
+      port: 8123
+      user: airflow
+      password: airflow
+      schema: youtube_db
+      secure: false

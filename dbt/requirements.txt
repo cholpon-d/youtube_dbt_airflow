@@ -1,0 +1,6 @@
+dbt-core==1.7.2
+dbt-clickhouse==1.7.2
+
+protobuf<5.0.0
+requests
+psycopg2-binary
