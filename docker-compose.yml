@@ -15,15 +15,8 @@ x-airflow-common: &airflow-common
     - ./airflow/dags:/opt/airflow/dags
     - ./airflow/logs:/opt/airflow/logs
     - ./airflow/plugins:/opt/airflow/plugins
-    - ./shared_data:/opt/shared_data
-    - /var/run/docker.sock:/var/run/docker.sock
-  networks:
-    - default
 
 services:
-  # =========================
-  # Postgres для RAW данных
-  # =========================
   postgres:
     container_name: postgres-db
     image: postgres:15
@@ -43,9 +36,6 @@ services:
           cpus: '0.3'
           memory: 400M
 
-  # =========================
-  # ClickHouse
-  # =========================
   clickhouse:
     container_name: clickhouse-server
     image: clickhouse/clickhouse-server:24.3
@@ -65,17 +55,13 @@ services:
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - ./shared_data:/opt/shared_data
-    networks:
-      - default
+
     deploy:
       resources:
         limits:
           cpus: '0.5'
           memory: 1G
 
-  # =========================
-  # Airflow init
-  # =========================
   airflow-init:
     <<: *airflow-common
     container_name: airflow-init
@@ -96,9 +82,6 @@ services:
       - postgres
       - clickhouse
 
-  # =========================
-  # Airflow webserver
-  # =========================
   airflow-webserver:
     <<: *airflow-common
     container_name: airflow-webserver
@@ -112,9 +95,6 @@ services:
           memory: 1.2G
     restart: always
 
-  # =========================
-  # Airflow scheduler
-  # =========================
   airflow-scheduler:
     <<: *airflow-common
     container_name: airflow-scheduler
@@ -128,9 +108,6 @@ services:
     depends_on:
       - airflow-webserver
 
-  # =========================
-  # dbt
-  # =========================
   dbt:
     build:
       context: ./dbt
@@ -144,10 +121,6 @@ services:
     volumes:
       - ./profiles.yml:/usr/app/profiles.yml
     tty: true
-
-networks:
-  default:
-    driver: bridge
 
 volumes:
   clickhouse_data:
