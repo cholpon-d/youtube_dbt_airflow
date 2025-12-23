@@ -2,10 +2,11 @@ youtube_project:
   target: dev
   outputs:
     dev:
-      type: clickhouse
-      host: clickhouse
-      port: 8123
-      user: airflow
-      password: airflow
-      schema: youtube_db
+      type: postgres
+      host: postgres
+      port: 5432
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+      dbname: ${POSTGRES_DB}
+      schema: raw
       secure: false

@@ -120,6 +120,8 @@ services:
       DBT_PROFILES_DIR: /usr/app
     volumes:
       - ./profiles.yml:/usr/app/profiles.yml
+      - ./dbt/youtube_project:/usr/app/youtube_project
+    working_dir: /usr/app/youtube_project
     tty: true
 
 volumes:

@@ -1,0 +1,39 @@
+version: 2
+
+sources:
+  - name: youtube_raw
+    database: youtube_raw
+    schema: raw
+    tables:
+      - name: youtube_videos
+        description: 'Raw YouTube videos loaded from YouTube Data API'
+        columns:
+          - name: video_id
+            description: 'YouTube video id'
+            tests:
+              - not_null
+              - unique
+
+          - name: channel_id
+            description: 'Youtube channel id'
+
+          - name: published_at
+            description: 'Video publish timestamp'
+
+          - name: title
+            description: 'Video title'
+
+          - name: view_count
+            description: 'View count'
+
+          - name: like_count
+            description: 'Like count'
+
+          - name: comment_count
+            description: 'Comment count'
+
+          - name: load_ts
+            description: 'Load timestamp'
+
+          - name: raw_payload
+            description: 'Original API payload (JSON)'
