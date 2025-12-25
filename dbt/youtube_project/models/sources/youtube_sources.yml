@@ -32,6 +32,24 @@ sources:
           - name: comment_count
             description: 'Comment count'
 
+          - name: dislike_count
+            description: 'Dislike count'
+
+          - name: favorite_count
+            description: 'Favorite count'
+
+          - name: duration_raw
+            description: 'Raw duration string from YouTube API'
+
+          - name: has_caption
+            description: 'Whether the video has captions'
+
+          - name: topic_categories
+            description: 'Topic categories'
+
+          - name: category_id
+            description: 'Category ID of the video'
+
           - name: load_ts
             description: 'Load timestamp'
 

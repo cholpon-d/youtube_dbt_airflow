@@ -1,0 +1,33 @@
+category_id,category_name,category_group,is_active,priority
+1,Film & Animation,Entertainment,TRUE,7
+2,Autos & Vehicles,Lifestyle,TRUE,8
+10,Music,Entertainment,TRUE,1
+15,Pets & Animals,Lifestyle,TRUE,9
+17,Sports,Sports & Gaming,TRUE,3
+18,Short Movies,Entertainment,TRUE,11
+19,Travel & Events,Lifestyle,TRUE,10
+20,Gaming,Sports & Gaming,TRUE,2
+21,Videoblogging,Content Creation,TRUE,12
+22,People & Blogs,Content Creation,TRUE,13
+23,Comedy,Entertainment,TRUE,4
+24,Entertainment,Entertainment,TRUE,5
+25,News & Politics,Education & News,TRUE,6
+26,Howto & Style,Lifestyle,TRUE,14
+27,Education,Education & News,TRUE,15
+28,Science & Technology,Education & News,TRUE,16
+29,Nonprofits & Activism,Education & News,TRUE,17
+30,Movies,Entertainment,TRUE,18
+31,Anime/Animation,Entertainment,TRUE,19
+32,Action/Adventure,Entertainment,TRUE,20
+33,Classics,Entertainment,TRUE,21
+34,Comedy,Entertainment,TRUE,22
+35,Documentary,Education & News,TRUE,23
+36,Drama,Entertainment,TRUE,24
+37,Family,Entertainment,TRUE,25
+38,Foreign,Entertainment,TRUE,26
+39,Horror,Entertainment,TRUE,27
+40,Sci-Fi/Fantasy,Entertainment,TRUE,28
+41,Thriller,Entertainment,TRUE,29
+42,Shorts,Entertainment,TRUE,30
+43,Shows,Entertainment,TRUE,31
+44,Trailers,Entertainment,TRUE,32

@@ -1,0 +1,7 @@
+models:
+  youtube_project:
+    analytics:
+      +materialized: table
+      +database: clickhouse_db
+      +order_by: 'tuple()'
+      +engine: 'MergeTree()'

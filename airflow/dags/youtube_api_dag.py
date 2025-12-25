@@ -2,7 +2,8 @@ from airflow.decorators import dag, task
 from airflow.utils.dates import days_ago
 import requests 
 import os 
-from datetime import datetime
+from datetime import datetime, timedelta
+import time
 import logging 
 from youtube_postgres import create_raw_table, insert_videos
 
@@ -23,9 +24,9 @@ default_args = {
 @dag(
     dag_id="youtube_raw_dag",
     default_args=default_args,
-    start_date=days_ago(1),
+    start_date=datetime(2025, 1, 11),
     schedule_interval='@daily',
-    catchup=False,
+    catchup=True,
     tags=["youtube", "raw"]
 )
 
@@ -39,17 +40,20 @@ def youtube_raw():
     def fetch_videos():
         videos = []
         try:
+            month_ago = (datetime.utcnow() - timedelta(days=30)).isoformat() + "Z"
             params = {
                 "part": "snippet",
                 "maxResults": 50,
                 "order": "date",
                 "type": "video",
-                "publishedAfter": "2025-12-10T00:00:00Z",
-                "q": "news|health|technology|music|sports|education|cosmetics",
+                "publishedAfter": month_ago,
+                "q": "news|health|technology|music|movies|anime|sports|education|cosmetics",
                 "key": YOUTUBE_API_KEY
             }
             next_page_token = None 
-            while len(videos) < 200:
+            request_count = 0
+            MAX_REQUESTS = 50
+            while len(videos) < 3000 and request_count < MAX_REQUESTS:
                 if next_page_token:
                     params["pageToken"] = next_page_token
 
@@ -73,12 +77,15 @@ def youtube_raw():
                 next_page_token = data.get("nextPageToken")
                 if not next_page_token:
                     break 
-            logger.info(f"Fetched {len(videos)} videos")
+            logger.info(f"Request {request_count}: collected {len(videos)} videos")
+
+            time.sleep(0.1)
+
+            logger.info(f"Total collected {len(videos)} videos using {request_count} requests")
+            return videos
         except Exception as e:
             logger.error(f"Failed fetching videos: {e}")
             raise 
-
-        return videos
     
     @task 
     def fetch_video_stats(videos: list):
@@ -88,7 +95,7 @@ def youtube_raw():
                 batch = videos[i:i+50]
                 video_ids = ",".join([v["video_id"] for v in batch])
                 params = {
-                    "part": "statistics",
+                    "part": "snippet,statistics,contentDetails,topicDetails",
                     "id": video_ids,
                     "key": YOUTUBE_API_KEY
                 }
@@ -96,17 +103,28 @@ def youtube_raw():
                 response.raise_for_status()
                 data = response.json()
 
-                stats_map = {v["id"]: v.get("statistics", {}) for v in data.get("items", [])}
+                video_data_map = {item["id"]: item for item in data.get("items", [])}
 
                 for v in batch:
-                    stats = stats_map.get(v["video_id"], {})
+                    data_for_video = video_data_map.get(v["video_id"], {})
+                    stats = data_for_video.get("statistics", {})
                     v["view_count"] = int(stats.get("viewCount", 0))
                     v["like_count"] = int(stats.get("likeCount", 0))
                     v["comment_count"] = int(stats.get("commentCount", 0))
+                    v["dislike_count"] = int(stats.get("dislikeCount", 0))
+                    v["favorite_count"] = int(stats.get("favoriteCount", 0))
+                    snippet = data_for_video.get("snippet", {})
+                    v["category_id"] = snippet.get("categoryId")
+                    content_details = data_for_video.get("contentDetails", {})
+                    v["duration_raw"] = content_details.get("duration", "PT0S")
+                    caption_status = content_details.get("caption", "false")
+                    v["has_caption"] = caption_status.lower() == "true"
+                    topic_details = data_for_video.get("topicDetails", {})
+                    v["topic_categories"] = topic_details.get("topicCategories", [])
                     enriched.append(v)
-            logger.info("Video statistics successfully retrieved")
+            logger.info(f"Successfully enriched {len(enriched)} videos")
         except Exception as e:
-            logger.error(f"Error retrieving video statistics: {e}")
+            logger.error(f"Error retrieving extended video data: {e}")
             raise
         return enriched
     

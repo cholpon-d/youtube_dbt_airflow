@@ -30,8 +30,14 @@ def create_raw_table():
         title TEXT,
         view_count BIGINT,
         like_count BIGINT,
+        raw_payload JSONB,
         comment_count BIGINT,
-        raw_payload JSONB
+        dislike_count BIGINT DEFAULT 0,
+        favorite_count BIGINT DEFAULT 0,
+        duration_raw TEXT,
+        has_caption BOOLEAN,
+        topic_categories JSONB,
+        category_id TEXT
     );
     """
 
@@ -61,6 +67,12 @@ def insert_videos(videos: list[dict]):
             v.get("view_count", 0),
             v.get("like_count", 0),
             v.get("comment_count", 0),
+            v.get("dislike_count", 0),
+            v.get("favorite_count", 0),
+            v.get("duration_raw"),
+            v.get("has_caption"),
+            json.dumps(v.get("topic_categories", [])),
+            v.get("category_id"),
             json.dumps(v["raw_payload"])
         )
         for v in videos 
@@ -76,6 +88,12 @@ def insert_videos(videos: list[dict]):
      view_count, 
      like_count, 
      comment_count, 
+     dislike_count, 
+     favorite_count,
+     duration_raw,
+     has_caption,
+     topic_categories,
+     category_id,
      raw_payload)
     VALUES %s
     ON CONFLICT (video_id) DO NOTHING;

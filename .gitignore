@@ -2,6 +2,7 @@
 .env
 
 profiles.yml
+dbt/.user.yml
 
 # === Airflow ===
 airflow/logs/

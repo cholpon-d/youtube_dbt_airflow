@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: dim_youtube_video
+    description: 'Dimension table with one row per Youtube video'
+    columns:
+      - name: video_id
+        description: 'Youtube video ID'
+        tests:
+          - not_null
+          - unique
+      - name: channel_id
+        description: 'YouTube channel ID'
+
+      - name: title
+        description: 'Video title'
+
+      - name: published_at
+        description: 'Video publish timestamp'
