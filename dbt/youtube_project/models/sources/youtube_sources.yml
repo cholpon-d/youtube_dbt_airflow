@@ -10,9 +10,6 @@ sources:
         columns:
           - name: video_id
             description: 'YouTube video id'
-            tests:
-              - not_null
-              - unique
 
           - name: channel_id
             description: 'Youtube channel id'

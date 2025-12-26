@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: int_youtube_videos_clean
+    description: 'Cleaned YouTube videos data'
+    columns:
+      - name: video_id
+        description: 'YouTube video ID'
+        tests:
+          - not_null
+          - unique
+      - name: view_count
+        description: 'Number of views for the video'
+        tests:
+          - not_null
+      - name: like_count
+        description: 'Number of likes for the video'
+        tests:
+          - not_null
+      - name: duration_seconds
+        description: 'Duration of the video in seconds'
+        tests:
+          - not_null
+      - name: published_at
+        description: 'Timestamp when the video was published'
+        tests:
+          - not_null
+
+  - name: fact_youtube_channels
+    description: 'Fact table for YouTube channels aggregated metrics'
+    columns:
+      - name: channel_id
+        description: 'YouTube channel ID'
+        tests:
+          - not_null
+      - name: total_views
+        description: 'Total number of views across all videos in the channel'
+        tests:
+          - not_null
+
+  - name: fact_youtube_categories
+    description: 'Fact table for YouTube video categories aggregated metrics'
+    columns:
+      - name: category_name
+        description: 'Name of the YouTube video category'
+        tests:
+          - not_null
+      - name: video_count
+        description: 'Total number of videos in this category'
+        tests:
+          - not_null
+      - name: total_views
+        description: 'Total number of views for videos in this category'
+        tests:
+          - not_null
