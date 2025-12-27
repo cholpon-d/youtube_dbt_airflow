@@ -1,8 +1,9 @@
 from airflow.decorators import dag, task
 from airflow.utils.dates import days_ago
+from airflow.operators.python import get_current_context
 import requests 
 import os 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import time
 import logging 
 from youtube_postgres import create_raw_table, insert_videos
@@ -24,9 +25,10 @@ default_args = {
 @dag(
     dag_id="youtube_raw_dag",
     default_args=default_args,
-    start_date=datetime(2025, 1, 11),
+    start_date=datetime(2025, 12, 1),
     schedule_interval='@daily',
     catchup=True,
+    max_active_runs=1,
     tags=["youtube", "raw"]
 )
 
@@ -40,26 +42,46 @@ def youtube_raw():
     def fetch_videos():
         videos = []
         try:
-            month_ago = (datetime.utcnow() - timedelta(days=30)).isoformat() + "Z"
+            context = get_current_context()
+            logical_date = context['logical_date']
+
+            utc_now = datetime.now(timezone.utc)
+            
+            day_start = logical_date.replace(
+                hour=0, minute=0, second=0, microsecond=0, tzinfo=timezone.utc)
+
+            if day_start >= utc_now:
+                day_start = utc_now - timedelta(days=1)
+                day_start = day_start.replace(hour=0, minute=0, second=0, microsecond=0)  
+
+            published_after = day_start.replace(tzinfo=None).isoformat() + "Z"   
+
             params = {
                 "part": "snippet",
                 "maxResults": 50,
                 "order": "date",
                 "type": "video",
-                "publishedAfter": month_ago,
-                "q": "news|health|technology|music|movies|anime|sports|education|cosmetics",
+                "publishedAfter": published_after,
+                "q": "news|health|technology|music|movies|anime|sports|education|cosmetics|travel|cooking|fitness|vlog|gaming",
                 "key": YOUTUBE_API_KEY
             }
             next_page_token = None 
             request_count = 0
             MAX_REQUESTS = 50
-            while len(videos) < 3000 and request_count < MAX_REQUESTS:
+            while len(videos) < 2000 and request_count < MAX_REQUESTS:
                 if next_page_token:
                     params["pageToken"] = next_page_token
 
                 response = requests.get(SEARCH_URL, params=params)
+
+                logger.info(f"Rate limit: {response.headers.get('X-Rate-Limit-Remaining')}")
+
                 response.raise_for_status()
                 data = response.json()
+
+                if not data.get("items"):
+                    logger.info(f"No videos found for {day_start.date()}")
+                    return []
 
                 for item in data.get("items", []):
                     video_id = item.get("id", {}).get("videoId")
@@ -77,14 +99,16 @@ def youtube_raw():
                 next_page_token = data.get("nextPageToken")
                 if not next_page_token:
                     break 
-            logger.info(f"Request {request_count}: collected {len(videos)} videos")
 
-            time.sleep(0.1)
+                request_count += 1
+            logger.info(f"Request {request_count}: collected {len(videos)} videos for {day_start.date()}")
 
-            logger.info(f"Total collected {len(videos)} videos using {request_count} requests")
+            time.sleep(1)
+
+            logger.info(f"Total collected {len(videos)} videos for {day_start.date()}")
             return videos
         except Exception as e:
-            logger.error(f"Failed fetching videos: {e}")
+            logger.error(f"Failed fetching videos for {day_start.date() if 'day_start' in locals() else 'unknown date'}: {e}")
             raise 
     
     @task 
@@ -115,12 +139,14 @@ def youtube_raw():
                     v["favorite_count"] = int(stats.get("favoriteCount", 0))
                     snippet = data_for_video.get("snippet", {})
                     v["category_id"] = snippet.get("categoryId")
+
                     content_details = data_for_video.get("contentDetails", {})
                     v["duration_raw"] = content_details.get("duration", "PT0S")
                     caption_status = content_details.get("caption", "false")
                     v["has_caption"] = caption_status.lower() == "true"
                     topic_details = data_for_video.get("topicDetails", {})
                     v["topic_categories"] = topic_details.get("topicCategories", [])
+
                     enriched.append(v)
             logger.info(f"Successfully enriched {len(enriched)} videos")
         except Exception as e:
