@@ -52,3 +52,38 @@ sources:
 
           - name: raw_payload
             description: 'Original API payload (JSON)'
+
+      - name: youtube_channels
+        description: 'Raw YouTube channels loaded from YouTube Data API'
+        columns:
+          - name: channel_id
+            description: 'YouTube channel id'
+            tests:
+              - unique
+              - not_null
+
+          - name: channel_name
+            description: 'Channel name'
+            tests:
+              - not_null
+
+          - name: description
+            description: 'Channel description'
+
+          - name: published_at
+            description: 'Channel publish timestamp'
+
+          - name: country
+            description: 'Channel country'
+
+          - name: view_count
+            description: 'View count'
+
+          - name: subscriber_count
+            description: 'Subscriber count'
+
+          - name: video_count
+            description: 'Video count'
+
+          - name: load_ts
+            description: 'Load timestamp'
