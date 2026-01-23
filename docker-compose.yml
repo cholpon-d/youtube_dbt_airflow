@@ -48,6 +48,9 @@ services:
       - CLICKHOUSE_USER=airflow
       - CLICKHOUSE_PASSWORD=airflow
       - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
+
+      - CLICKHOUSE_USER_GRAFANA=grafana
+      - CLICKHOUSE_PASSWORD_GRAFANA=grafana
     ulimits:
       nofile:
         soft: 262144
@@ -56,11 +59,38 @@ services:
       - clickhouse_data:/var/lib/clickhouse
       - ./shared_data:/opt/shared_data
 
+    mem_limit: 512m
+    mem_reservation: 256m
     deploy:
       resources:
         limits:
           cpus: '0.5'
-          memory: 1G
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:11.1.0
+    user: '472:472'
+    ports:
+      - '3000:3000'
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-clickhouse-datasource
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+    mem_limit: 256m
+    mem_reservation: 128m
+    cpus: 0.2
+    depends_on:
+      - clickhouse
+
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 500M
+    restart: unless-stopped
 
   airflow-init:
     <<: *airflow-common
@@ -128,3 +158,4 @@ volumes:
   clickhouse_data:
   postgres_data:
   shared_data:
+  grafana_data:

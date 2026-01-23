@@ -1,0 +1,683 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "afawk0947yjuod"
+      },
+      "description": "Total views across all channels for the selected period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "super-light-blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": false
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "afawk0947yjuod"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.12.0",
+          "queryType": "table",
+          "rawSql": "SELECT\r\n    count(*) AS \"Total Videos\"\r\nFROM analytics.int_youtube_videos_clean\r\n",
+          "refId": "A"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "afawk0947yjuod"
+      },
+      "description": "Total views across all channels for the selected period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "light-green",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": false
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "afawk0947yjuod"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.12.0",
+          "queryType": "table",
+          "rawSql": "SELECT\r\n    sum(daily_views) AS \"Total Views\"\r\nFROM analytics.fact_youtube_daily_monitorings",
+          "refId": "A"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "afawk0947yjuod"
+      },
+      "description": "Total views across all channels for the selected period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "super-light-orange",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": false
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "afawk0947yjuod"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.12.0",
+          "queryType": "table",
+          "rawSql": "SELECT\r\n    avg(daily_engagement_rate_percent) AS \"Avg Engagement\"\r\nFROM analytics.fact_youtube_daily_monitorings\r\nWHERE date >= $__fromTime AND date <= $__toTime",
+          "refId": "A"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "afawk0947yjuod"
+      },
+      "description": "Shows the total number of videos published per day.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "New Videos",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "daily_views"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.axisSoftMin",
+                "value": 0
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    0,
+                    10
+                  ],
+                  "fill": "dot"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Daily Views"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 0,
+        "y": 3
+      },
+      "id": 1,
+      "interval": "1d",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "builderOptions": {
+            "columns": [],
+            "database": "",
+            "limit": 1000,
+            "meta": {},
+            "mode": "list",
+            "queryType": "table",
+            "table": ""
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "afawk0947yjuod"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "meta": {},
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.12.0",
+          "queryType": "table",
+          "rawSql": "SELECT\r\n    toDate(date) AS time,\r\n    new_videos,\r\n    daily_views\r\nFROM analytics.fact_youtube_daily_monitorings\r\nWHERE date >= $__fromTime AND date <= $__toTime\r\nORDER BY time ASC",
+          "refId": "A"
+        }
+      ],
+      "title": "Daily Video Uploads in Youtube",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "afawk0947yjuod"
+      },
+      "description": "Comparison of categories by video volume and total views.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 12,
+        "y": 3
+      },
+      "id": 4,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^Total Views$/",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "afawk0947yjuod"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.12.0",
+          "queryType": "table",
+          "rawSql": "SELECT \r\n    category_name AS \"Category\", \r\n    sum(total_views) AS \"Total Views\"\r\nFROM analytics.fact_youtube_categories\r\nGROUP BY category_name\r\nORDER BY \"Total Views\" DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Video Distribution by Category",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "afawk0947yjuod"
+      },
+      "description": "List of videos with the highest Day 1 view counts. Includes engagement tiering and like percentages. Hashtag-only titles are filtered out.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Like %"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "max",
+                "value": 10
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Views (Day 1)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tier"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "viral": {
+                        "color": "semi-dark-red",
+                        "index": 0
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Video Title"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 216
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 22,
+        "x": 0,
+        "y": 12
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Like %"
+          }
+        ]
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "afawk0947yjuod"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.12.0",
+          "queryType": "table",
+          "rawSql": "SELECT \r\n    title AS \"Video Title\",\r\n    category_name AS \"Category\",\r\n    views_day_1 AS \"Views (Day 1)\",\r\n    like_percentage_day_1 AS \"Like %\",\r\n    popularity_tier_day_1 AS \"Tier\"\r\nFROM analytics.fact_video_sparks\r\nWHERE title NOT LIKE '#%'       \r\n  AND title != ''                   \r\n  AND length(title) > 5             \r\n  AND published_at >= $__fromTime \r\n  AND published_at <= $__toTime\r\nORDER BY views_day_1 DESC\r\nLIMIT 15",
+          "refId": "A"
+        }
+      ],
+      "title": "Viral Sparks: Top Performing Videos",
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "2025-11-30T18:00:00.000Z",
+    "to": "2025-12-30T18:00:00.000Z"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Daily uploads",
+  "uid": "ffay2yrppz7y8a",
+  "version": 17,
+  "weekStart": ""
+}

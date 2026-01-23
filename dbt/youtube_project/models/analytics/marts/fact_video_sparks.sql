@@ -47,5 +47,5 @@ LEFT JOIN {{ ref('dim_youtube_categories') }} d
     ON v.category_id = d.category_id
 LEFT JOIN {{ ref('dim_youtube_channels') }} ch 
     ON v.channel_id = ch.channel_id
-WHERE v.published_at >= now() - INTERVAL 2 DAY
+WHERE v.published_at >= now() - INTERVAL 30 DAY
   AND v.like_count >= 1000
