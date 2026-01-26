@@ -49,8 +49,27 @@ def create_raw_table():
         logger.info('Table raw.youtube_videos is created')
 
     except Exception as e:
-        logger.error(f'Error while creating table: {e}')
+        logger.error(f'Error creating table: {e}')
         raise 
+
+def check_video_data_exists(check_date, threshold=20):
+    sql = """
+        SELECT COUNT(*) 
+        FROM raw.youtube_videos 
+        WHERE published_at::date = %s;
+    """
+
+    try:
+        with get_pg_connections() as conn:
+            with conn.cursor() as cur:
+                cur.execute(sql, (check_date,))
+                count = cur.fetchone()[0]
+                logger.info(f"Checking {check_date}: found {count} videos in DB")
+                return count >= threshold
+                
+    except Exception as e:
+        logger.error(f"Error checking data count: {e}")
+        return False
 
 
 def insert_videos(videos: list[dict]):
@@ -58,7 +77,7 @@ def insert_videos(videos: list[dict]):
         logger.info('No videos to insert')
         return
     
-    rows = [
+    values = [
         (   
             v["load_ts"],
             v["video_id"],
@@ -103,11 +122,11 @@ def insert_videos(videos: list[dict]):
     try:
         with get_pg_connections() as conn:
             with conn.cursor() as cur:
-                execute_values(cur, sql, rows)
+                execute_values(cur, sql, values)
       
-        logger.info(f"Inserted {len(rows)} videos")
+        logger.info(f"Inserted {len(videos)} videos")
     except Exception as e:
-        logger.error(f"Error while inserting: {e}")
+        logger.error(f"Error inserting videos: {e}")
         raise
 
 def create_channels_table():
@@ -129,7 +148,6 @@ def create_channels_table():
     );
 
     CREATE INDEX IF NOT EXISTS idx_channels_name ON raw.youtube_channels(channel_name);
-    CREATE INDEX IF NOT EXISTS idx_channels_country ON raw.youtube_channels(country);
     CREATE INDEX IF NOT EXISTS idx_channels_updated ON raw.youtube_channels(load_ts);
     """
 
@@ -291,7 +309,7 @@ def export_channels_to_csv(filepath: str = '/tmp/youtube_channels.csv'):
                 with open(filepath, 'w', encoding='utf-8') as f:
                     cur.copy_expert(sql, f)
 
-        logger.info(f"Channel ecported to {filepath}")
+        logger.info(f"Channel exported to {filepath}")
         return filepath
     
     except Exception as e:

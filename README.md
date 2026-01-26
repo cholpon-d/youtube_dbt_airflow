@@ -49,6 +49,14 @@ The goal is to analyze:
   - video metadata
   - statistics (views, likes, comments)
   - categories, duration, captions, topics
+- Implements **idempotent loading**:
+  - `video_id` as primary key
+  - `ON CONFLICT DO NOTHING`
+- Safe to rerun and backfill historical data
+
+✅ Backfills from December 1st  
+✅ No duplicate records  
+✅ Production-style ingestion logic
 
 ---
 
@@ -84,8 +92,8 @@ models/
 - **staging**: renaming, casting, light cleanup
 - **intermediate**: daily metrics, enrichments, deltas
 - **marts**:
-  - `dim_youtube_video`
-  - `fct_youtube_daily_metrics`
+  - `dim_youtube_channels`
+  - `fct_youtube_daily_monitorings`
   - trend & rolling-average tables
 
 ✨ Includes:

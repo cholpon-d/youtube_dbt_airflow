@@ -1,8 +1,8 @@
 from airflow.decorators import dag, task
 from datetime import datetime, timedelta, timezone
 import requests
-import os
 import time
+import os
 import logging
 from youtube_postgres import create_channels_table, insert_channels, get_existing_channel_ids
 
@@ -22,9 +22,11 @@ default_args = {
     dag_id="youtube_channels_dag", 
     default_args=default_args,
     start_date=datetime(2025, 12, 1, tzinfo=timezone.utc),
+    end_date=datetime(2025, 12, 31, tzinfo=timezone.utc),
     schedule_interval='0 3 * * 0',  
-    catchup=False,
-    max_active_runs=1,
+    catchup=True,
+    max_active_runs=3,
+    concurrency=10,
     tags=["youtube", "channels", "dimensions"]
 )
 def youtube_channels():
