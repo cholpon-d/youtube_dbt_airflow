@@ -43,6 +43,7 @@ services:
     ports:
       - '8123:8123'
       - '9000:9000'
+      - '9363:9363'
     environment:
       - CLICKHOUSE_DB=airflow
       - CLICKHOUSE_USER=airflow
@@ -51,6 +52,8 @@ services:
 
       - CLICKHOUSE_USER_GRAFANA=grafana
       - CLICKHOUSE_PASSWORD_GRAFANA=grafana
+
+      - CLICKHOUSE_PROMETHEUS_PORT=9363
     ulimits:
       nofile:
         soft: 262144
@@ -58,13 +61,15 @@ services:
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - ./shared_data:/opt/shared_data
+      - ./prometheus_port.xml:/etc/clickhouse-server/config.d/prometheus_port.xml
 
-    mem_limit: 512m
-    mem_reservation: 256m
+    mem_limit: 1g
+    mem_reservation: 512m
     deploy:
       resources:
         limits:
-          cpus: '0.5'
+          cpus: '1.0'
+          memory: 1G
 
   grafana:
     container_name: grafana
@@ -154,8 +159,52 @@ services:
     working_dir: /usr/app/youtube_project
     tty: true
 
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=15d'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 256M
+    ports:
+      - '9090:9090'
+
+  loki:
+    image: grafana/loki:2.9.0
+    container_name: loki
+    ports:
+      - '3100:3100'
+    command: -config.file=/etc/loki/local-config.yaml
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 256M
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: promtail
+    volumes:
+      - ./promtail/config.yml:/etc/promtail/config.yml:ro
+      - ./airflow/logs:/opt/airflow/logs:ro
+    command: -config.file=/etc/promtail/config.yml
+    depends_on:
+      - loki
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 128M
 volumes:
   clickhouse_data:
   postgres_data:
   shared_data:
   grafana_data:
+  prometheus_data:

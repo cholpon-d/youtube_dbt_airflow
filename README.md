@@ -1,4 +1,4 @@
-# 🎥 YouTube Analytics Pipeline
+# ![logo_youtube](images/youtube_logo.png) YouTube Analytics Pipeline
 
 **From YouTube API to Real-Time Analytics Dashboards**
 
@@ -146,6 +146,38 @@ Interactive dashboards built on top of ClickHouse:
 - Ranked by views & engagement
 
 ## ![screen](images/grafana.png)
+
+### 🛡 Observability & Monitoring
+
+Lightweight observability stack designed for **local / laptop environments**, without sacrificing production-grade visibility.
+
+### 📊 Metrics & Health (Prometheus)
+
+- 🧠 **CPU & RAM monitoring** for all Docker containers
+- ⚡ **ClickHouse performance**: memory usage, active connections, query latency
+- 🖥 **Node Exporter**: host-level metrics to balance OS vs Docker load
+
+Helps detect bottlenecks early and avoid **OOM crashes**.
+
+---
+
+### 🧾 Logs (Loki & Promtail)
+
+- 📥 **Centralized logs**: Airflow task logs auto-collected from volumes
+- 🔍 **Grafana-native search** via Loki
+- 🪶 **Low resource footprint** — logs available even if Airflow UI is stopped
+
+---
+
+### 🧩 Grafana Super-Dashboard
+
+- 📈 Infra metrics + ingestion spikes
+- ✅ DAG status (success / failure) with live logs
+- 🔄 Low refresh rates for minimal laptop overhead
+
+Grafana acts as a **single control plane** for data + infrastructure.
+
+## ![screen](images/prometheus.png)
 
 ## 🎯 What This Project Demonstrates
 
