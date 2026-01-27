@@ -24,9 +24,9 @@
     {
       "datasource": {
         "type": "grafana-clickhouse-datasource",
-        "uid": "afawk0947yjuod"
+        "uid": "afbb956fdgw74d"
       },
-      "description": "Total views across all channels for the selected period.",
+      "description": "Total videos across all channels for the selected period.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -66,6 +66,9 @@
           "values": false
         },
         "showPercentChange": false,
+        "text": {
+          "titleSize": 18
+        },
         "textMode": "value_and_name",
         "wideLayout": false
       },
@@ -74,7 +77,7 @@
         {
           "datasource": {
             "type": "grafana-clickhouse-datasource",
-            "uid": "afawk0947yjuod"
+            "uid": "afbb956fdgw74d"
           },
           "editorType": "sql",
           "format": 1,
@@ -99,13 +102,13 @@
     {
       "datasource": {
         "type": "grafana-clickhouse-datasource",
-        "uid": "afawk0947yjuod"
+        "uid": "afbb956fdgw74d"
       },
       "description": "Total views across all channels for the selected period.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "light-green",
+            "fixedColor": "super-light-red",
             "mode": "fixed"
           },
           "mappings": [],
@@ -147,6 +150,9 @@
           "values": false
         },
         "showPercentChange": false,
+        "text": {
+          "titleSize": 18
+        },
         "textMode": "value_and_name",
         "wideLayout": false
       },
@@ -155,7 +161,7 @@
         {
           "datasource": {
             "type": "grafana-clickhouse-datasource",
-            "uid": "afawk0947yjuod"
+            "uid": "afbb956fdgw74d"
           },
           "editorType": "sql",
           "format": 1,
@@ -180,9 +186,90 @@
     {
       "datasource": {
         "type": "grafana-clickhouse-datasource",
-        "uid": "afawk0947yjuod"
+        "uid": "afbb956fdgw74d"
       },
-      "description": "Total views across all channels for the selected period.",
+      "description": "The average length of videos published during the selected period duration data.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "light-green",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "dtdurations"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Avg Video Duration$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 18
+        },
+        "textMode": "value_and_name",
+        "wideLayout": false
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "afbb956fdgw74d"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.12.0",
+          "queryType": "table",
+          "rawSql": "SELECT\r\n    avg(duration_seconds) as \"Avg Video Duration\"\r\nFROM analytics.fact_video_sparks\r\nWHERE $__timeFilter(published_at)",
+          "refId": "A"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "afbb956fdgw74d"
+      },
+      "description": "Average percentage of likes and comments per 100 views for the selected period.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -210,7 +297,7 @@
       "gridPos": {
         "h": 3,
         "w": 6,
-        "x": 12,
+        "x": 18,
         "y": 0
       },
       "id": 2,
@@ -228,6 +315,9 @@
           "values": false
         },
         "showPercentChange": false,
+        "text": {
+          "titleSize": 18
+        },
         "textMode": "value_and_name",
         "wideLayout": false
       },
@@ -236,7 +326,7 @@
         {
           "datasource": {
             "type": "grafana-clickhouse-datasource",
-            "uid": "afawk0947yjuod"
+            "uid": "afbb956fdgw74d"
           },
           "editorType": "sql",
           "format": 1,
@@ -252,7 +342,7 @@
           },
           "pluginVersion": "4.12.0",
           "queryType": "table",
-          "rawSql": "SELECT\r\n    avg(daily_engagement_rate_percent) AS \"Avg Engagement\"\r\nFROM analytics.fact_youtube_daily_monitorings\r\nWHERE date >= $__fromTime AND date <= $__toTime",
+          "rawSql": "SELECT\r\n    avg(daily_engagement_rate_percent) AS \"Audience Activity\"\r\nFROM analytics.fact_youtube_daily_monitorings\r\nWHERE date >= $__fromTime AND date <= $__toTime",
           "refId": "A"
         }
       ],
@@ -261,7 +351,7 @@
     {
       "datasource": {
         "type": "grafana-clickhouse-datasource",
-        "uid": "afawk0947yjuod"
+        "uid": "afbb956fdgw74d"
       },
       "description": "Shows the total number of videos published per day.",
       "fieldConfig": {
@@ -277,7 +367,7 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 20,
+            "fillOpacity": 25,
             "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
@@ -389,7 +479,7 @@
           },
           "datasource": {
             "type": "grafana-clickhouse-datasource",
-            "uid": "afawk0947yjuod"
+            "uid": "afbb956fdgw74d"
           },
           "editorType": "sql",
           "format": 1,
@@ -417,7 +507,7 @@
     {
       "datasource": {
         "type": "grafana-clickhouse-datasource",
-        "uid": "afawk0947yjuod"
+        "uid": "afbb956fdgw74d"
       },
       "description": "Comparison of categories by video volume and total views.",
       "fieldConfig": {
@@ -440,7 +530,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 10,
+        "w": 12,
         "x": 12,
         "y": 3
       },
@@ -473,7 +563,7 @@
         {
           "datasource": {
             "type": "grafana-clickhouse-datasource",
-            "uid": "afawk0947yjuod"
+            "uid": "afbb956fdgw74d"
           },
           "editorType": "sql",
           "format": 1,
@@ -500,7 +590,7 @@
     {
       "datasource": {
         "type": "grafana-clickhouse-datasource",
-        "uid": "afawk0947yjuod"
+        "uid": "afbb956fdgw74d"
       },
       "description": "List of videos with the highest Day 1 view counts. Includes engagement tiering and like percentages. Hashtag-only titles are filtered out.",
       "fieldConfig": {
@@ -603,7 +693,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 216
+                "value": 339
               }
             ]
           }
@@ -611,7 +701,7 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 22,
+        "w": 24,
         "x": 0,
         "y": 12
       },
@@ -640,7 +730,7 @@
         {
           "datasource": {
             "type": "grafana-clickhouse-datasource",
-            "uid": "afawk0947yjuod"
+            "uid": "afbb956fdgw74d"
           },
           "editorType": "sql",
           "format": 1,
@@ -678,6 +768,6 @@
   "timezone": "browser",
   "title": "Daily uploads",
   "uid": "ffay2yrppz7y8a",
-  "version": 17,
+  "version": 11,
   "weekStart": ""
 }
