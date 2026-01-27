@@ -131,6 +131,7 @@ Interactive dashboards built on top of ClickHouse:
 - **Total Videos**
 - **Total Views**
 - **Average Engagement**
+- **Avgerage Video Duration**
 
 ### 📈 Time Series
 
