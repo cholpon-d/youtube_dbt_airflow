@@ -34,9 +34,11 @@ The goal is to analyze:
 | Ingestion         | YouTube Data API        |
 | Orchestration     | Apache Airflow          |
 | Raw Storage       | PostgreSQL              |
-| Transformation    | dbt                     |
+| Transformation    | dbt (Core)              |
 | Analytics Storage | ClickHouse              |
 | Visualization     | Grafana                 |
+| Monitoring        | Prometheus              |
+| Logging           | Loki & Promtail         |
 | Infrastructure    | Docker & Docker Compose |
 
 ---
@@ -181,12 +183,14 @@ Grafana acts as a **single control plane** for data + infrastructure.
 
 ## 🎯 What This Project Demonstrates
 
-✅ Real-world ELT architecture  
-✅ Proper Airflow scheduling & backfills  
+✅ Real-world **ELT** architecture  
+✅ Proper **Airflow** scheduling & backfills  
 ✅ Idempotent data ingestion  
-✅ dbt modeling best practices  
-✅ ClickHouse analytics patterns  
-✅ BI dashboards for business users
+✅ **dbt** modeling best practices  
+✅ **ClickHouse** analytics patterns  
+✅ **BI** dashboards for business users  
+✅ Infrastructure observability with **Prometheus**  
+✅ Centralized logging via **Loki & Promtail**
 
 This is **not a tutorial pipeline**, but a realistic analytics system.
 
